@@ -9,15 +9,18 @@ import Button from '@/components/ui/Button';
 
 interface AISectionPreviewProps {
   output: AIGeneratedOutput;
+  teamCount?: number;
   onConfirm?: () => void;
   onRegenerate?: () => void;
 }
 
 export default function AISectionPreview({
   output,
+  teamCount,
   onConfirm,
   onRegenerate,
 }: AISectionPreviewProps) {
+  void teamCount;
   const [openPages, setOpenPages] = useState<Record<number, boolean>>(() => {
     // All open by default
     const map: Record<number, boolean> = {};

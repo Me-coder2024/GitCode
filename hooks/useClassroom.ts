@@ -20,6 +20,12 @@ export function useClassrooms() {
 
       const res = await fetch('/api/classrooms')
 
+      if (res.status === 401) {
+        // Not authenticated yet — return empty, don't set error
+        setClassrooms([])
+        return
+      }
+
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}))
         throw new Error(errorData.error || 'Failed to fetch classrooms')

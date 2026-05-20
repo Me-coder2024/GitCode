@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Users } from 'lucide-react';
 import { cn, getInitials } from '@/lib/utils';
 import type { Team } from '@/types';
@@ -7,10 +8,11 @@ import Button from '@/components/ui/Button';
 
 interface TeamCardProps {
   team: Team;
+  classroomId?: string;
   onViewSections?: () => void;
 }
 
-export default function TeamCard({ team, onViewSections }: TeamCardProps) {
+export default function TeamCard({ team, classroomId, onViewSections }: TeamCardProps) {
   const visibleMembers = (team.members ?? []).slice(0, 5);
   const extraCount = (team.members?.length ?? 0) - 5;
 
@@ -57,9 +59,13 @@ export default function TeamCard({ team, onViewSections }: TeamCardProps) {
 
       {/* Actions */}
       <div className="mt-auto pt-5">
-        <Button variant="outline" fullWidth onClick={onViewSections}>
-          View Sections
-        </Button>
+        {classroomId ? (
+          <Link href={`/classroom/${classroomId}`}>
+            <Button variant="outline" fullWidth onClick={onViewSections}>View Sections</Button>
+          </Link>
+        ) : (
+          <Button variant="outline" fullWidth onClick={onViewSections}>View Sections</Button>
+        )}
       </div>
     </div>
   );

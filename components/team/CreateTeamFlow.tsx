@@ -11,6 +11,8 @@ import Input from '@/components/ui/Input';
 interface CreateTeamFlowProps {
   classroomId: string;
   onComplete?: (team: Team) => void;
+  onSuccess?: () => void;
+  onCancel?: () => void;
 }
 
 const STEPS = ['Team Name', 'Team Size', 'Done'];
@@ -18,6 +20,8 @@ const STEPS = ['Team Name', 'Team Size', 'Done'];
 export default function CreateTeamFlow({
   classroomId,
   onComplete,
+  onSuccess,
+  onCancel,
 }: CreateTeamFlowProps) {
   const [step, setStep] = useState(0);
   const [name, setName] = useState('');
@@ -68,6 +72,7 @@ export default function CreateTeamFlow({
       setStep(2);
       toast.success('Team created successfully!');
       onComplete?.(data.team);
+      onSuccess?.();
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : 'Something went wrong';

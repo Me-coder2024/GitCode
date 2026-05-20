@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
       if (insertError) {
         console.error("Error inserting user:", insertError);
         return NextResponse.json(
-          { error: "Failed to create user" },
+          { error: "Failed to create user", detail: insertError.message, code: insertError.code },
           { status: 500 }
         );
       }

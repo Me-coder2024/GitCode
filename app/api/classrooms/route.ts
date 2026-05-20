@@ -12,7 +12,11 @@ export async function GET(request: NextRequest) {
   try {
     const user = await getCurrentUser(request);
     if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      const token = request.cookies.get("firebase-token")?.value;
+      return NextResponse.json(
+        { error: "Unauthorized", hasToken: !!token },
+        { status: 401 }
+      );
     }
 
     const { searchParams } = new URL(request.url);

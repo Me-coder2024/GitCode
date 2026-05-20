@@ -19,15 +19,10 @@ export function useAuth() {
     try {
       const idToken = await fbUser.getIdToken()
 
-      // Set the firebase-token cookie for API route auth
-      document.cookie = `firebase-token=${idToken}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`
-
       const res = await fetch('/api/auth/firebase', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          token: idToken,
-        }),
+        body: JSON.stringify({ token: idToken }),
       })
 
       if (!res.ok) {
@@ -89,9 +84,6 @@ export function useAuth() {
       setUser(null)
       setFirebaseUser(null)
       setIsAdmin(false)
-
-      // Clear the firebase-token cookie
-      document.cookie = 'firebase-token=; path=/; max-age=0; SameSite=Lax'
 
       toast.success('Signed out successfully')
       router.push('/')

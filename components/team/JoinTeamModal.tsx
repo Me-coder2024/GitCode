@@ -8,16 +8,20 @@ import { cn } from '@/lib/utils';
 
 interface JoinTeamModalProps {
   open: boolean;
-  onOpenChange: (open: boolean) => void;
+  onOpenChange?: (open: boolean) => void;
+  onClose?: () => void;
   classroomId: string;
-  onJoin: (code: string) => Promise<void>;
+  onJoin?: (code: string) => Promise<void>;
+  onJoined?: () => void;
 }
 
 export default function JoinTeamModal({
   open,
   onOpenChange,
+  onClose,
   classroomId,
   onJoin,
+  onJoined,
 }: JoinTeamModalProps) {
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
@@ -37,9 +41,24 @@ export default function JoinTeamModal({
 
     setLoading(true);
     try {
-      await onJoin(code.trim());
+      if (onJoin) {
+        await onJoin(code.trim());
+      } else {
+        const res = await fetch('/api/teams/join', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ team_code: code.trim() }),
+        })
+        if (!res.ok) {
+          const d = await res.json().catch(() => ({}))
+          throw new Error(d.error || 'Failed to join team')
+        }
+        toast.success('Joined team successfully!')
+      }
       setCode('');
-      onOpenChange(false);
+      onOpenChange?.(false);
+      onClose?.();
+      onJoined?.();
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : 'Failed to join team';
@@ -52,7 +71,7 @@ export default function JoinTeamModal({
   return (
     <Modal
       open={open}
-      onOpenChange={onOpenChange}
+      onOpenChange={(v) => { onOpenChange?.(v); if (!v) onClose?.(); }}
       title="Join a Team"
       description="Enter your team's 6-character invite code"
     >

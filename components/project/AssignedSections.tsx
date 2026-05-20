@@ -2,18 +2,25 @@
 
 import { Layers } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { TeamSectionAssignment } from '@/types';
+import type { TeamSectionAssignment, ProjectPage } from '@/types';
 import SectionCard from '@/components/project/SectionCard';
 
 interface AssignedSectionsProps {
   assignments: TeamSectionAssignment[];
+  pages?: ProjectPage[];
+  projectId?: string;
   onUpdateStatus?: (id: string, status: string) => void;
+  onStatusUpdate?: () => void;
 }
 
 export default function AssignedSections({
   assignments,
+  pages,
+  projectId,
   onUpdateStatus,
+  onStatusUpdate,
 }: AssignedSectionsProps) {
+  void pages; void projectId;
   return (
     <div>
       {/* Header */}
@@ -50,6 +57,8 @@ export default function AssignedSections({
               onUpdateStatus={
                 onUpdateStatus
                   ? (status) => onUpdateStatus(assignment.id, status)
+                  : onStatusUpdate
+                  ? () => onStatusUpdate()
                   : undefined
               }
             />
