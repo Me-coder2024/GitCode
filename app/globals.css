@@ -1,26 +1,165 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ==========================================
+   GitCode Design System — Tailwind v4
+   ========================================== */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Colors */
+  --color-primary: #00BFA6;
+  --color-primary-dark: #00A896;
+  --color-primary-light: #E0F7F3;
+  --color-navy: #1A1A2E;
+  --color-navy-light: #2D2D44;
+  --color-accent-yellow: #F5C518;
+  --color-accent-yellow-light: #FEF9E7;
+  --color-accent-red: #E63946;
+  --color-accent-red-light: #FDE8EA;
+  --color-background: #F8F9FC;
+  --color-card: #FFFFFF;
+  --color-text-primary: #1A1A2E;
+  --color-text-muted: #6B7280;
+  --color-border: #E5E7EB;
+  --color-border-light: #F3F4F6;
+
+  /* Category pill tints */
+  --color-pill-lavender: #EDE9FE;
+  --color-pill-yellow: #FEF3C7;
+  --color-pill-blue: #DBEAFE;
+  --color-pill-green: #D1FAE5;
+  --color-pill-pink: #FCE7F3;
+  --color-pill-orange: #FED7AA;
+  --color-pill-red: #FEE2E2;
+  --color-pill-indigo: #E0E7FF;
+
+  /* Fonts */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --shadow-card-hover: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --shadow-modal: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+  /* Animations */
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-slide-up: slide-up 0.5s ease-out;
+  --animate-slide-down: slide-down 0.3s ease-out;
+  --animate-scale-in: scale-in 0.2s ease-out;
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-pulse-soft: pulse-soft 2s ease-in-out infinite;
+  --animate-spin-slow: spin 3s linear infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Keyframes */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Base styles */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+/* Focus ring utility */
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-primary), #00D4AA, var(--color-accent-yellow));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Card hover effect */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Dot pattern background */
+.dot-pattern {
+  background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Grid pattern background */
+.grid-pattern {
+  background-image: 
+    linear-gradient(var(--color-border-light) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border-light) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
